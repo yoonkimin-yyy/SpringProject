@@ -1,0 +1,63 @@
+
+<html>
+<head>
+	<title>도서 관리 시스템</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+	<body>
+	<h1>
+		도서 관리 시스템  
+	</h1>
+
+	<h2>1. 도서 전체 목록 조회</h2>
+	<button type="button" onclick="listAll()">전체 목록 조회</button>
+    
+	
+	<br>
+	<hr>
+	<br>
+	
+	<h2>2. 특정 도서 조회</h2>
+	<input type="text" id="select-book" placeholder="도서 제목을 입력해주세요.">
+	<button type="button" onclick="selectBook()">조회</button>
+	
+	<br>
+	<hr>
+	<br>
+
+    <h2>3. 도서 추가</h2>
+	<input type="text" placeholder="대여할 도서 제목을 입력해주세요.">
+	<button type="button" onclick="addBook()">대여</button>
+		
+	<br>
+	<hr>
+	<br>
+
+	<h2>4. 도서 대여</h2>
+	<input type="text" placeholder="대여할 도서 제목을 입력해주세요.">
+	<button type="button" onclick="borrowBook()">대여</button>
+		
+	<br>
+	<hr>
+	<br>
+	
+	<h2>5. 도서 반납</h2>
+	<input type="text"  placeholder="반납할 도서 제목을 입력해주세요.">
+	<button type="button" onclick="returnBook()">반납</button>
+	
+	
+	<script src="/js/book/api.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

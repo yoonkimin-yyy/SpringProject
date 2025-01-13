@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="~{fragments/common/head :: HeadFragment}">
+  <title>간단한 홈페이지</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="../main.css">
+
+</head>
+<body>
+  <header th:replace="~{fragments/common/head :: HeadFragment}">
+    
+  </header>
+
+  <nav th:replace="~{fragments/common/nav :: NavFragment}">
+    
+  </nav>
+
+    <section style="height: 70vh">
+    <form action ="/contact/contactList" method="get"> 
+      <h1>연락 내역</h1>
+      <hr>
+      <div class="input-group mb-3" style="width: 100%; margin-top:40px">
+        <select class="form-select" id="inputGroupSelect02" name="category" style="width:100px; height:46px; flex: 0 0 auto;">
+          <option value="category-title" th:selected="${searchDTO.category == 'titlte'}">제목</option>
+          <option value="category-content" th:selected="${searchDTO.category == 'userName'}">작성자</option>
+          <option value="category-writer" th:selected="${searchDTO.category == 'userEmail'}">이메일</option>
+        </select>
+        <input type="text" style="width:500px; flex: 0 0 auto;" class="form-control" name="serachText"
+        	th:value="${searchDTO.searchText}"
+         placeholder="검색어를 입력해주세요." aria-label="Recipient's username" aria-describedby="button-addon2">
+        <button class="btn btn-outline-secondary" type="submit" id="button-addon2" style="height:46px;">검색</button>
+     </form>
+        
+      </div>
+        <div class="table-container">
+          <table class="table table-hover" style="margin-top: 10px;">
+            <thead>
+              <tr>
+                <th scope="col">번호</th>
+                <th scope="col">이름</th>
+                <th scope="col">이메일</th>
+                <th scope="col">작성일</th>
+                <th scope="col">답변</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="data, iterStat : ${data}"
+              th:attr="onclick=|location.href='@{/contact/detail(userNo=${data.userNo})}'|">
+                <th scope="row" th:text="${pi.row - iterStat.index}"></th>
+                <td th:text="${data.userName}"></td>
+                <td th:text="${data.userEmail}"></td>
+                <td th:text="${data.writeDate}"></td>
+                <td th:text="${data.answer}"></td>
+              </tr>
+            </tbody>
+          </table>
+          <button class="add-button">등록</button>
+
+        </div>
+
+        <nav aria-label="Page navigation example" style="background-color: white; ">
+          <ul class="pagination" style="justify-content: center;">
+            <li class="page-item" style="margin-right: 0px">
+            
+              <a class="page-link" th:if="${pi.currentPage <= pi.pageLimit}"
+               th:href="@{/contact/contactList(currenPage=1)}"aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+              <a class="page-link" th:if="${pi.currentPage > pi.pageLimit}"
+               th:href="@{/contact/contactList(currenPage=1)}"aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            
+             <!-- 페이지 버튼 -->
+            <li class="page-item" style="margin-right: 0px"
+            	th:each="page : ${#numbers.sequence(pi.startPage, pi.endPage)}">
+               <a class="page-link" th:href="@{/contact/contactList(currentPage=${page})}"
+                th:text="${page}" style="margin-right: 0px"></a>
+            </li>
+            
+            
+            <li class="page-item" style="margin-right: 0px"><a
+               class="page-link" th:if="${pi.endPage == pi.maxpage}"
+               	th:href="@{/contact/contactList(currentPage=${pi.endPage})}" aria-label="Next"> <span
+                  aria-hidden="true">&raquo;</span>
+            </a>
+            <a
+               class="page-link" th:if="${pi.endPage != pi.maxpage}" 
+               th:href="@{/contact/contactList(currentPage=${pi.endPage+1})}" aria-label="Next"> <span
+                  aria-hidden="true">&raquo;</span>
+            </a>
+            </li>
+
+          </ul>
+        </nav>
+  </section>
+
+  <footer  th:replace="~{fragments/common/footer :: FooterFragment}">
+    <p>저의 홈페이지에 방문해 주셔서 감사합니다.</p>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+</body>
+</html>

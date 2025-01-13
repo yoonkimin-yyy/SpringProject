@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+						 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="kr.co.green.member.model.mapper.MemberMapper">
+	<insert id="signup">
+	
+	INSERT INTO member
+	VALUES(member_seq.nextval,
+			#{id},
+			#{name},
+			#{password},
+			default,
+			sysdate,
+			null,
+			null)
+	</insert>
+	
+	
+	<select id="signin">
+	SELECT no AS no,
+		id AS id,
+		name AS name,
+		password
+	 	FROM member
+	 WHERE id=#{id}
+	 AND status = 'Active'
+	</select>
+	
+	
+
+	
+	<select id="checkId" resultType="int">
+	 SELECT count(*) FROM member
+	 WHERE id = #{memberId}
+	</select>
+
+</mapper>

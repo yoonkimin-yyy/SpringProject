@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+						 "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="kr.co.green.contact.model.mapper.ContactMapper">
+
+
+<resultMap id="contactResultMap" type= "kr.co.green.contact.model.dto.UserDTO">
+	<result property="userNo" column="no"></result>
+	<result property="userEmail" column="user_email"></result>
+	<result property= "answer" column="answer"></result>
+	<result property="writeDate" column="write_date"></result>
+	<result property="userName" column="user_name"></result>
+	
+	
+	<association property="askAnswer" javaType="kr.co.green.contact.model.dto.AskAnswerDTO">
+	<result property="answerNo" column="no"></result>
+	<result property="answerText" column="ask_answer"></result>
+	</association>
+	
+	
+	
+</resultMap>
+
+	<insert id="enroll">
+      <selectKey keyProperty = "userNo" resultType ="int" order = "BEFORE">
+         SELECT contact_user_seq.nextval FROM dual
+      </selectKey>
+      INSERT INTO contact_user
+      VALUES(#{userNo},
+      		#{userEmail},
+      		#{userName},
+           	DEFAULT,
+            sysdate)
+   </insert>
+   
+   <insert id="askEnroll">   
+      INSERT INTO contact_data
+      VALUES(#{userNo},
+            #{askAnswer.answerText})
+            
+   </insert>
+   
+	<select id="contactlist" resultMap="contactResultMap">
+		
+	SELECT * FROM
+	(SELECT cu.no,cu.user_email,cu.user_name, cu.answer,cu.write_date, row_NUMBER() over(ORDER BY user_email desc)AS rn
+	FROM
+	 CONTACT_USER cu
+	JOIN CONTACT_DATA cd ON
+	cu.no = cd.no 
+	WHERE cu.no = cd.no
+	)
+	WHERE rn BETWEEN #{pi.offset} AND #{pi.limit}
+	</select>
+	
+	
+	<select id="getTotalCount" >
+	SELECT COUNT(*) FROM contact_data cd
+	
+	<choose>
+		<when test="category.equals('title')">
+			JOIN contact_user cu on cu.no = cd.no
+			WHERE cu.no LIKE '%' || #{searchText} || '%'
+		</when>
+		<when test="category.equals('userName')">
+			JOIN contact_user cu on cu.no = cd.no
+			WHERE cu.user_name LIKE '%' || #{searchText} || '%'
+		</when>
+		<when test="category.equals('userEmail')">
+			JOIN contact_user cu on cu.no = cd.no
+			WHERE cu.user_email LIKE '%' || #{searchText} || '%'
+		</when>
+	</choose>
+	</select>
+
+	<select id="detail" resultMap="contactResultMap">
+		
+	SELECT cu."NO" ,cu.USER_EMAIL ,cu.USER_NAME ,cd.ASK_ANSWER,cu.WRITE_DATE 
+	FROM CONTACT_USER cu 
+	JOIN CONTACT_DATA cd ON
+	cu."NO" = cd."NO" 
+	WHERE cu.no = #{userNo}
+	
+	</select>
+
+	<insert id="apply">
+		INSERT INTO all_request_data
+		VALUES(#{applyNo},#{applyText})
+
+	
+	</insert>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

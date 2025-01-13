@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="~{fragments/common/head :: HeadFragment}">
+</head>
+<body>
+  <header th:replace="~{fragments/common/header :: HeaderFragment}">
+  </header>
+
+  <nav th:replace="~{fragments/common/nav :: NavFragment}">
+   
+  </nav>
+
+  <section>
+    <div class="signup-form">
+        <h2>회원가입</h2>
+        <form action="/member/signup" method="POST">
+          <div class="input-container">
+        </div>
+        <div class="input-container">
+          <label for="new-username">이름:</label>
+          <input type="text" id="new-username" name="name" required>
+        </div>
+
+        <div class="input-container">
+            <label for="new-userid">아이디:</label>
+            <input type="text" id="new-userid" name="id" onkeyup="checkId()" required>
+              <div id="id-msg"></div>
+        </div>
+          <div class="input-container">
+            <label for="new-password">비밀번호:</label>
+            <input type="password" id="new-password" name="password" required>
+              
+          </div>
+  
+          <div class="input-container">
+            <label for="confirm-password">비밀번호 확인:</label>
+            <input type="password" id="confirm-password" name="confirmPassword" required>
+          </div>
+  
+          <button type="submit">회원가입</button>
+        </form>
+      </div>
+  </section>
+
+   <script src="/js/member/duplicationCheck.js"></script>
+  <footer th:replace="~{fragments/common/footer :: FooterFragment}">
+  </footer>
+</body>
+</html>
